@@ -11,7 +11,10 @@ pipeline {
 
         stage('Checkout') {
             steps {
-                deleteDir() // Supprime le workspace actuel
+                // Nettoie le workspace pour éviter les fichiers bloqués
+                deleteDir() 
+                
+                // Clone le projet depuis GitHub
                 git branch: 'main',
                     url: 'https://github.com/PapaBadara/HelloWebAppJavaTomcat.git'
             }
@@ -20,6 +23,7 @@ pipeline {
         stage('Build') {
             steps {
                 dir('HelloWorldWebApp') {
+                    // Compile et package le projet Java
                     sh 'mvn clean package'
                 }
             }
@@ -28,6 +32,7 @@ pipeline {
         stage('Archive WAR') {
             steps {
                 dir('HelloWorldWebApp') {
+                    // Archive le WAR généré pour pouvoir le retrouver dans Jenkins
                     archiveArtifacts artifacts: 'target/*.war', fingerprint: true
                 }
             }
@@ -35,16 +40,15 @@ pipeline {
 
         stage('Deploy to Tomcat') {
             steps {
-                dir('HelloWorldWebApp') {
-                    deploy adapters: [
-                        tomcat9(
-                            credentialsId: 'tomcat-creds',
-                            url: 'http://localhost:8081'
-                        )
-                    ],
-                    contextPath: 'HelloWorldWebApp',
-        war: 'HelloWorldWebApp/target/HelloWorldWebApp-1.0-SNAPSHOT.war'
-                }
+                // Déploie le WAR sur Tomcat via le plugin Jenkins Tomcat
+                deploy adapters: [
+                    tomcat9(
+                        credentialsId: 'tomcat-creds',  // Vérifie que ce credential existe
+                        url: 'http://10.163.12.54:8081' // IP accessible depuis Jenkins Docker
+                    )
+                ],
+                contextPath: 'HelloWorldWebApp',
+                war: 'HelloWorldWebApp/target/HelloWorldWebApp-1.0-SNAPSHOT.war'
             }
         }
     }
