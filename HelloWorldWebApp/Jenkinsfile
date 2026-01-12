@@ -2,6 +2,7 @@ pipeline {
     agent any
 
     tools {
+	    git 'Default Git'
         jdk 'JDK17'
         maven 'Maven3'
     }
@@ -37,7 +38,7 @@ pipeline {
                     deploy adapters: [
                         tomcat9(
                             credentialsId: 'tomcat-creds',
-                            url: 'http://10.163.12.54:8081'
+                            url: 'http://localhost:8081'
                         )
                     ],
                     contextPath: 'HelloWorldWebApp',
@@ -49,10 +50,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build et déploiement réussis!"
+            echo "✅ Build et déploiement réussis"
         }
         failure {
-            echo "❌ Erreur dans le pipeline!"
+            echo "❌ Erreur dans le pipeline"
         }
     }
 }
