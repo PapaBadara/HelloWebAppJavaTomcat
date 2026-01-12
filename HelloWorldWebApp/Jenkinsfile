@@ -11,6 +11,7 @@ pipeline {
 
         stage('Checkout') {
             steps {
+                deleteDir() // Supprime le workspace actuel
                 git branch: 'main',
                     url: 'https://github.com/PapaBadara/HelloWebAppJavaTomcat.git'
             }
