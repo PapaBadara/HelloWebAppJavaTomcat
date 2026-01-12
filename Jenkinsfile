@@ -17,26 +17,32 @@ pipeline {
 
         stage('Build') {
             steps {
-                sh 'mvn clean package'
+                dir('HelloWorldWebApp') {
+                    sh 'mvn clean package'
+                }
             }
         }
 
         stage('Archive WAR') {
             steps {
-                archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                dir('HelloWorldWebApp') {
+                    archiveArtifacts artifacts: 'target/*.war', fingerprint: true
+                }
             }
         }
 
         stage('Deploy to Tomcat') {
             steps {
-                deploy adapters: [
-                    tomcat9(
-                        credentialsId: 'tomcat-creds',
-                        url: 'http://localhost:8081'
-                    )
-                ],
-                contextPath: 'HelloWorldWebApp',
-                war: 'target/HelloWorldWebApp-1.0-SNAPSHOT.war'
+                dir('HelloWorldWebApp') {
+                    deploy adapters: [
+                        tomcat9(
+                            credentialsId: 'tomcat-creds',
+                            url: 'http://localhost:8081'
+                        )
+                    ],
+                    contextPath: 'HelloWorldWebApp',
+                    war: 'target/HelloWorldWebApp-1.0-SNAPSHOT.war'
+                }
             }
         }
     }
