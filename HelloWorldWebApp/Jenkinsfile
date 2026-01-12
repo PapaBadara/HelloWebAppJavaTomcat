@@ -43,7 +43,7 @@ pipeline {
                         )
                     ],
                     contextPath: 'HelloWorldWebApp',
-                    war: 'target/HelloWorldWebApp-1.0-SNAPSHOT.war'
+        war: 'HelloWorldWebApp/target/HelloWorldWebApp-1.0-SNAPSHOT.war'
                 }
             }
         }
