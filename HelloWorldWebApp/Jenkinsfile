@@ -55,10 +55,10 @@ pipeline {
 
     post {
         success {
-            echo "✅ Build et déploiement réussis"
+            echo "Build et déploiement réussis"
         }
         failure {
-            echo "❌ Erreur dans le pipeline"
+            echo "Erreur dans le pipeline"
         }
     }
 }
