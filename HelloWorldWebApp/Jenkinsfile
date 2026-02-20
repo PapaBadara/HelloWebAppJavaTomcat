@@ -44,7 +44,7 @@ pipeline {
                 deploy adapters: [
                     tomcat9(
                         credentialsId: 'tomcat-creds',  // Vérifie que ce credential existe
-                        url: 'http://10.163.8.183:8081' // IP accessible depuis Jenkins Docker
+                        url: 'http://10.163.12.180:8081' // IP accessible depuis Jenkins Docker
                     )
                 ],
                 contextPath: 'HelloWorldWebApp',
